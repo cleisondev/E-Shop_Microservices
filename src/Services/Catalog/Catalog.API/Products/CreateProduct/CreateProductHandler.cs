@@ -1,23 +1,34 @@
-﻿
-using BuildingBlocks.CQRS;
+﻿using BuildingBlocks.CQRS;
 using Catalog.API.Models;
-using Marten;
 using System.Windows.Input;
 
 namespace Catalog.API.Products.CreateProduct
 {
 
     public record CreateProductCommand
-        (string Name, List<string> Category, string Description, string ImageFile, decimal Price) 
+        (string Name, List<string> Category, string Description, string ImageFile, decimal Price)
         : ICommand<CreateProductResult>;
     public record CreateProductResult(Guid Id);
-    internal class CreateProductCommandHandler(IDocumentSession session)
+
+    public class CreateProductValidator : AbstractValidator<CreateProductCommand>
+    {
+        public CreateProductValidator()
+        {
+            RuleFor(n => n.Name).NotEmpty().WithMessage("Product name is required.");
+            RuleFor(n => n.Category).NotEmpty().WithMessage("Product category is required.");
+            RuleFor(n => n.ImageFile).NotEmpty().WithMessage("Product image file is required.");
+            RuleFor(n => n.Price).GreaterThan(0).WithMessage("Product price must be greater than zero.");
+        }
+    }
+    internal class CreateProductCommandHandler
+        (IDocumentSession session)
         : ICommandHandler<CreateProductCommand, CreateProductResult>
     {
         public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
             try
             {
+
                 var product = new Product
                 {
                     Name = command.Name,
@@ -39,7 +50,7 @@ namespace Catalog.API.Products.CreateProduct
 
                 throw;
             }
-            
+
         }
     };
 
