@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ValidationException = FluentValidation.ValidationException;
 
 namespace BuildingBlocks.Exceptions.Handler
 {
@@ -37,7 +38,7 @@ namespace BuildingBlocks.Exceptions.Handler
                     context.Response.StatusCode = StatusCodes.Status404NotFound
                 ),
                 
-                FluentValidation.ValidationException  =>
+                ValidationException  =>
                 (
                 exception.Message,
                 exception.GetType().Name,
