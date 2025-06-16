@@ -14,6 +14,7 @@ builder.Services.AddMediatR(config =>
 builder.Services.AddMarten(opt =>
 {
     opt.Connection(builder.Configuration.GetConnectionString("Database")!);
+    opt.Schema.For<ShoppingCart>().Identity(x => x.Username);   
 }).UseLightweightSessions();
 
 var app = builder.Build();
