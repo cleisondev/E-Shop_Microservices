@@ -2,12 +2,12 @@
 namespace Basket.API.Basket.DeleteBasket
 {
     public record DeleteBasketCommand(string Username) : ICommand<DeleteBasketResult>;
-    public record DeleteBasketResult(string Username);
+    public record DeleteBasketResult(bool isSuccess);
 
     public class DeleteBasketHandler(IDocumentSession session)
         : ICommandHandler<DeleteBasketCommand, DeleteBasketResult>
     {
-        public Task<DeleteBasketResult> Handle(DeleteBasketCommand request, CancellationToken cancellationToken)
+        public async Task<DeleteBasketResult> Handle(DeleteBasketCommand request, CancellationToken cancellationToken)
         {
             var cart = session.Load<ShoppingCart>(request.Username);    
             if(cart is null)
@@ -15,8 +15,7 @@ namespace Basket.API.Basket.DeleteBasket
 
             session.Delete(cart);
 
-            return session.SaveChangesAsync(cancellationToken)
-                .ContinueWith(_ => new DeleteBasketResult(request.Username), cancellationToken);
+            return new DeleteBasketResult(true);
         }
     }
 }
