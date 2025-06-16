@@ -8,12 +8,12 @@
     {
         public async Task<GetBasketResult> Handle(GetBasketQuery request, CancellationToken cancellationToken)
         {
-            var cart = await session.LoadAsync<ShoppingCart>(request.Username, cancellationToken);
+            //var cart = await session.LoadAsync<ShoppingCart>(request.Username, cancellationToken);
 
-            return new GetBasketResult(cart ?? new ShoppingCart
+            return new GetBasketResult(new ShoppingCart
             {
-                Username = request.Username,
-                Items = new List<ShoppingCartItem>()
+                Username = "Cleison",
+                Items = []
             });
         }
     }
