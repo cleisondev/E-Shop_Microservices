@@ -1,5 +1,4 @@
 
-
 var builder = WebApplication.CreateBuilder(args);
 var assembly = typeof(Program).Assembly;
 
@@ -16,6 +15,8 @@ builder.Services.AddMarten(opt =>
     opt.Connection(builder.Configuration.GetConnectionString("Database")!);
     opt.Schema.For<ShoppingCart>().Identity(x => x.Username);   
 }).UseLightweightSessions();
+
+builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 
 var app = builder.Build();
 

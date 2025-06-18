@@ -1,4 +1,5 @@
 ﻿
+using Basket.API.Data;
 using FluentValidation;
 
 namespace Basket.API.Basket.DeleteBasket
@@ -15,17 +16,12 @@ namespace Basket.API.Basket.DeleteBasket
         }
     }   
 
-    public class DeleteBasketHandler(IDocumentSession session)
+    public class DeleteBasketHandler(IBasketRepository _repo)
         : ICommandHandler<DeleteBasketCommand, DeleteBasketResult>
     {
         public async Task<DeleteBasketResult> Handle(DeleteBasketCommand request, CancellationToken cancellationToken)
         {
-            var cart = session.Load<ShoppingCart>(request.Username);    
-            if(cart is null)
-                throw new Exception($"Basket with username {request.Username} not found.");
-
-            session.Delete(cart);
-
+            await _repo.DeleteBasket(request.Username, cancellationToken);
             return new DeleteBasketResult(true);
         }
     }
