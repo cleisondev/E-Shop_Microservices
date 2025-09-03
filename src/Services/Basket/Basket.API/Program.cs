@@ -32,9 +32,19 @@ builder.Services.AddStackExchangeRedisCache(opt =>
 });
 
 //Grpc Services
-builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(opt =>
+builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
 {
-    opt.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
+    options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
+})
+.ConfigurePrimaryHttpMessageHandler(() =>
+{
+    var handler = new HttpClientHandler
+    {
+        ServerCertificateCustomValidationCallback =
+        HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+    };
+
+    return handler;
 });
 
 //Cross cutting services   
