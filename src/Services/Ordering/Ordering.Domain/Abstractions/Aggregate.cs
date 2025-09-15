@@ -1,7 +1,9 @@
 ﻿
+using System.Security.Cryptography;
+
 namespace Ordering.Domain.Abstractions
 {
-    public abstract class Aggregate<Tid> : Entity<Tid>, IAggregate<Tid>
+    public abstract class Aggregate<TId> : Entity<TId>, IAggregate<TId>
     {
         private readonly List<IDomainEvent> _domainEvents = new();
         public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
