@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Ordering.Infrastructure.Data;
 
 namespace Ordering.Infrastructure
 {
@@ -10,6 +12,10 @@ namespace Ordering.Infrastructure
         {
             // Add infrastructure services here, e.g., DbContext, Repositories, External Services, etc.
             var connectionString = configuration.GetConnectionString("DataBase");   
+
+            services.AddDbContext<ApplicationDbContext>(options => 
+                options.UseSqlServer(connectionString));
+
             return services;
         }
     }

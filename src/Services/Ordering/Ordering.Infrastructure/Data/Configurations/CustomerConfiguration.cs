@@ -20,9 +20,11 @@ namespace Ordering.Infrastructure.Data.Configurations
                 customerId => customerId.Value,
                 dbId => CustomerId.Of(dbId));
 
-            builder.Property(c => c.Name)
-                   .IsRequired()
-                   .HasMaxLength(100);
+            builder.Property(c => c.Name).HasMaxLength(100).IsRequired();
+
+            builder.Property(c => c.Email).HasMaxLength(255);
+
+            builder.HasIndex(c => c.Email).IsUnique();
         }
     }
 }
