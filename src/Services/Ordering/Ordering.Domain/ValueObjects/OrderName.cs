@@ -8,7 +8,7 @@ namespace Ordering.Domain.ValueObjects
         public const int DefaultLength = 50; 
         public string Value { get; }
         public OrderName(string value) => Value = value;
-        public OrderName Of(string value)
+        public static OrderName Of(string value)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(value);
             ArgumentOutOfRangeException.ThrowIfNotEqual(value.Length,DefaultLength);
