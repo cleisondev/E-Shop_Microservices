@@ -14,10 +14,10 @@ namespace Ordering.Infrastructure
             // Add infrastructure services here, e.g., DbContext, Repositories, External Services, etc.
             var connectionString = configuration.GetConnectionString("DataBase");
 
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<ApplicationDbContext>((sp,options) =>
             {
 
-                options.AddInterceptors(new AuditableEntityInterceptor());
+                options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
                 options.UseSqlServer(connectionString);
             });
 
