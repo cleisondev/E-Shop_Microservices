@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Ordering.Infrastructure.Data;
+using Ordering.Infrastructure.Data.Interceptors;
 
 namespace Ordering.Infrastructure
 {
@@ -11,10 +12,14 @@ namespace Ordering.Infrastructure
             (this IServiceCollection services, IConfiguration configuration)
         {
             // Add infrastructure services here, e.g., DbContext, Repositories, External Services, etc.
-            var connectionString = configuration.GetConnectionString("DataBase");   
+            var connectionString = configuration.GetConnectionString("DataBase");
 
-            services.AddDbContext<ApplicationDbContext>(options => 
-                options.UseSqlServer(connectionString));
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+
+                options.AddInterceptors(new AuditableEntityInterceptor());
+                options.UseSqlServer(connectionString);
+            });
 
             return services;
         }

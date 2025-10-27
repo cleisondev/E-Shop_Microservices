@@ -5,7 +5,7 @@ namespace Ordering.Domain.ValueObjects
     public record OrderName
     {
      
-        public const int DefaultLength = 50; 
+        public const int DefaultLength = 5; 
         public string Value { get; }
         public OrderName(string value) => Value = value;
         public static OrderName Of(string value)
