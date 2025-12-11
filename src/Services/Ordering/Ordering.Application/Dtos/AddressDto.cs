@@ -1,3 +1,3 @@
 ﻿namespace Ordering.Application.Dtos;
 
-public record AddressDto(string FirstName, string LastName, string EmailAddress, string AddressLine, string Country, string ZipCode, string State);
+public record AddressDto(string firstName, string Lastname, string EmailAddress, string AddressLine, string Country, string ZipCode);
